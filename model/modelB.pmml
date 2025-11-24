@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="SkLearn2PMML package" version="0.123.1"/>
+		<Timestamp>2025-11-24T14:39:32Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension name="repr">PMMLPipeline(steps=[('preprocess', ColumnTransformer(transformers=[('scale', StandardScaler(),
+                                 ['flipper_length_mm', 'body_mass_g'])])),
+       ('clf', LogisticRegression(max_iter=200, random_state=42))])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="target" optype="categorical" dataType="integer">
+			<Value value="0"/>
+			<Value value="1"/>
+		</DataField>
+		<DataField name="flipper_length_mm" optype="continuous" dataType="double"/>
+		<DataField name="body_mass_g" optype="continuous" dataType="double"/>
+	</DataDictionary>
+	<RegressionModel functionName="classification" algorithmName="sklearn.linear_model._logistic.LogisticRegression" normalizationMethod="logit">
+		<MiningSchema>
+			<MiningField name="target" usageType="target"/>
+			<MiningField name="flipper_length_mm"/>
+			<MiningField name="body_mass_g"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+			<OutputField name="probability(1)" optype="continuous" dataType="double" feature="probability" value="1"/>
+		</Output>
+		<LocalTransformations>
+			<DerivedField name="standardScaler(flipper_length_mm)" optype="continuous" dataType="double">
+				<Apply function="/">
+					<Apply function="-">
+						<FieldRef field="flipper_length_mm"/>
+						<Constant dataType="double">202.28679245283018</Constant>
+					</Apply>
+					<Constant dataType="double">14.990588717225206</Constant>
+				</Apply>
+			</DerivedField>
+			<DerivedField name="standardScaler(body_mass_g)" optype="continuous" dataType="double">
+				<Apply function="/">
+					<Apply function="-">
+						<FieldRef field="body_mass_g"/>
+						<Constant dataType="double">4328.679245283019</Constant>
+					</Apply>
+					<Constant dataType="double">838.1629456922476</Constant>
+				</Apply>
+			</DerivedField>
+		</LocalTransformations>
+		<RegressionTable intercept="-0.6317641656767553" targetCategory="1">
+			<NumericPredictor name="standardScaler(flipper_length_mm)" coefficient="3.8725633423407686"/>
+			<NumericPredictor name="standardScaler(body_mass_g)" coefficient="1.763091010488225"/>
+		</RegressionTable>
+		<RegressionTable intercept="0.0" targetCategory="0"/>
+	</RegressionModel>
+</PMML>

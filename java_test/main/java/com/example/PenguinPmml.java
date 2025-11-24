@@ -17,19 +17,13 @@ import org.jpmml.model.PMMLUtil;
 public class PenguinPmml {
 
     public static void main(String[] args) throws Exception {
-        Path modelA = Paths.get("..", "model", "modelA.pmml").toAbsolutePath(); // PMMLモデルAのパス
-        Path modelB = Paths.get("..", "model", "modelB.pmml").toAbsolutePath(); // PMMLモデルBのパス
+        Path modelPath = Paths.get("..", "model", "penguin.pmml").toAbsolutePath(); // PMMLモデルのパス
 
         System.out.println("=== Penguin PMML inference (Adelie=0, Gentoo=1) ==="); // 見出し
-        runModel(modelA, Map.of(
+        runModel(modelPath, Map.of(
                 "bill_length_mm", 40.3, // 嘴長
                 "bill_depth_mm", 18.0   // 嘴深
-        ), "ModelA bill_length_mm/bill_depth_mm"); // モデルA推論
-
-        runModel(modelB, Map.of(
-                "flipper_length_mm", 210.0, // 翼長
-                "body_mass_g", 4500.0       // 体重
-        ), "ModelB flipper_length_mm/body_mass_g"); // モデルB推論
+        ), "bill_length_mm/bill_depth_mm"); // モデル推論
     }
 
     private static void runModel(Path modelPath, Map<String, Double> rawFeatures, String label) throws Exception {
