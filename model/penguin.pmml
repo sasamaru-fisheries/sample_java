@@ -2,11 +2,20 @@
 <PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
 	<Header>
 		<Application name="SkLearn2PMML package" version="0.123.1"/>
-		<Timestamp>2025-11-25T14:32:05Z</Timestamp>
+		<Timestamp>2025-11-30T13:07:24Z</Timestamp>
 	</Header>
 	<MiningBuildTask>
-		<Extension name="repr">PMMLPipeline(steps=[('preprocess', ColumnTransformer(transformers=[('num', StandardScaler(), ['bill_length_mm']),
-                                ('cat', OneHotEncoder(handle_unknown='ignore'),
+		<Extension name="repr">PMMLPipeline(steps=[('preprocess', ColumnTransformer(transformers=[('num',
+                                 Pipeline(steps=[('imputer',
+                                                  SimpleImputer(strategy='median')),
+                                                 ('scaler', StandardScaler())]),
+                                 ['bill_length_mm']),
+                                ('cat',
+                                 Pipeline(steps=[('imputer',
+                                                  SimpleImputer(missing_values='',
+                                                                strategy='most_frequent')),
+                                                 ('onehot',
+                                                  OneHotEncoder(handle_unknown='ignore'))]),
                                  ['island'])])),
        ('clf', LogisticRegression(max_iter=200, random_state=42))])</Extension>
 	</MiningBuildTask>
@@ -17,6 +26,7 @@
 		</DataField>
 		<DataField name="bill_length_mm" optype="continuous" dataType="double"/>
 		<DataField name="island" optype="categorical" dataType="string">
+			<Value value="" property="missing"/>
 			<Value value="Biscoe"/>
 			<Value value="Dream"/>
 			<Value value="Torgersen"/>
@@ -25,8 +35,8 @@
 	<RegressionModel functionName="classification" algorithmName="sklearn.linear_model._logistic.LogisticRegression" normalizationMethod="logit">
 		<MiningSchema>
 			<MiningField name="target" usageType="target"/>
-			<MiningField name="island" invalidValueTreatment="asIs"/>
-			<MiningField name="bill_length_mm"/>
+			<MiningField name="island" missingValueReplacement="Biscoe" missingValueTreatment="asMode" invalidValueTreatment="asIs"/>
+			<MiningField name="bill_length_mm" missingValueReplacement="42.0" missingValueTreatment="asMedian"/>
 		</MiningSchema>
 		<Output>
 			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
@@ -37,17 +47,17 @@
 				<Apply function="/">
 					<Apply function="-">
 						<FieldRef field="bill_length_mm"/>
-						<Constant dataType="double">42.75056603773586</Constant>
+						<Constant dataType="double">42.697826086956525</Constant>
 					</Apply>
-					<Constant dataType="double">5.204954974192847</Constant>
+					<Constant dataType="double">5.167596466938626</Constant>
 				</Apply>
 			</DerivedField>
 		</LocalTransformations>
-		<RegressionTable intercept="-1.6705269006609675" targetCategory="1">
-			<NumericPredictor name="standardScaler(bill_length_mm)" coefficient="3.701031978580815"/>
-			<CategoricalPredictor name="island" value="Biscoe" coefficient="2.054603580883885"/>
-			<CategoricalPredictor name="island" value="Dream" coefficient="-0.8012969974955833"/>
-			<CategoricalPredictor name="island" value="Torgersen" coefficient="-1.251555753259778"/>
+		<RegressionTable intercept="-1.6881369877925787" targetCategory="1">
+			<NumericPredictor name="standardScaler(bill_length_mm)" coefficient="3.707859293072639"/>
+			<CategoricalPredictor name="island" value="Biscoe" coefficient="2.1083772920081274"/>
+			<CategoricalPredictor name="island" value="Dream" coefficient="-0.8080862443493956"/>
+			<CategoricalPredictor name="island" value="Torgersen" coefficient="-1.2980621823860932"/>
 		</RegressionTable>
 		<RegressionTable intercept="0.0" targetCategory="0"/>
 	</RegressionModel>

@@ -3,6 +3,7 @@ package com.example; // パッケージ宣言
 import java.nio.file.Files; // ファイル読み込み
 import java.nio.file.Path; // パス表現
 import java.nio.file.Paths; // パス生成ユーティリティ
+import java.util.LinkedHashMap; // nullを許容するマップ
 import java.util.Map; // 入力マップ
 
 import org.dmg.pmml.PMML; // PMMLモデル表現
@@ -27,10 +28,9 @@ public class PenguinPmml { // PMML推論の最小サンプル
         evaluator.verify(); // モデル検証
 
         // 入力データをそのままマップで用意
-        Map<String, Object> rawFeatures = Map.of(
-                "bill_length_mm", 40.3,    // 数値入力
-                "island", "Torgersen"     // カテゴリ入力
-        );
+        Map<String, Object> rawFeatures = new LinkedHashMap<>(); // null許容の入力データ
+        rawFeatures.put("bill_length_mm", null); // 数値欠損はnullを渡し、インプタで補完
+        rawFeatures.put("island", "");          // カテゴリ欠損は空文字
 
         // 評価器が期待する形式に変換（型・前処理を適用）
         Map<String, Object> arguments = new java.util.LinkedHashMap<>();

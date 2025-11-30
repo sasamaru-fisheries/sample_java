@@ -18,8 +18,8 @@ public class PenguinOnnx { // ONNX推論の最小サンプル
 
             // 入力データ（数値1特徴＋カテゴリ1特徴）をテンソルに変換
             Map<String, OnnxTensor> inputs = Map.of(
-                    "bill_length_mm", OnnxTensor.createTensor(env, new float[][]{{40.3f}}),
-                    "island", OnnxTensor.createTensor(env, new String[][]{{"Torgersen"}})
+                    "bill_length_mm", OnnxTensor.createTensor(env, new float[][]{{Float.NaN}}), // 数値は欠損ならNaN
+                    "island", OnnxTensor.createTensor(env, new String[][]{{""}}) // カテゴリ欠損は空文字
             );
 
             // 推論を実行し、決め打ちの出力名で結果を取得

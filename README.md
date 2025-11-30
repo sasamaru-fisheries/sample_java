@@ -9,6 +9,10 @@
 - ONNX 推論: `mvn -Dexec.mainClass=com.example.PenguinOnnx exec:java`
 - PMML 推論: `mvn -Dexec.mainClass=com.example.PenguinPmml exec:java`
 
+### 推論サンプルの入力（欠損を含んでも動作）
+- ONNX: `bill_length_mm=NaN`, `island=""`（インプタで補完されて推論）
+- PMML: `bill_length_mm=null`, `island=""`（インプタで補完されて推論）
+
 ## ONNX と PMML の違いメモ (Javaでの読み込み/推論/型指定)
 - **ロード方法**
   - ONNX: `OrtEnvironment`/`OrtSession` を使って `createSession` にモデルパスを渡すだけ。
